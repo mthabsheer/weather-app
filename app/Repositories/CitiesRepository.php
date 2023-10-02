@@ -9,7 +9,12 @@ use Exception;
 
 class CitiesRepository implements CitiesRepositoryContract
 {
-    public function saveCity(CityRequest $request)
+    /**
+     * @param CityRequest $request
+     * 
+     * @return Cities
+     */
+    public function saveCity(CityRequest $request): Cities
     {
         try {
             $city = Cities::create([
@@ -27,5 +32,17 @@ class CitiesRepository implements CitiesRepositoryContract
 
             throw $e;
         }
+    }
+
+    /**
+     * @param string $name
+     * 
+     * @return Cities|null
+     */
+    public function getAcitveCityByName(string $name): Cities|null
+    {
+        return Cities::where('name', $name)
+        ->active()
+        ->first();
     }
 }

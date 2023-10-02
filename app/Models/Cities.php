@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Cities extends Model
@@ -23,4 +24,12 @@ class Cities extends Model
         'lng',
         'status',
     ];
+
+    /**
+     * Scope a query to only include active cities.
+     */
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('status', self::STATUS_ENABLED);
+    }
 }

@@ -17,11 +17,14 @@ class CitiesController extends BaseController
         return $this->sendResponse('Success', $weatherService->getForecastForAllCity());
     }
 
-    public function show(string $name, WeatherApiContracts $weatherService)
+    public function show(string $name, WeatherApiContracts $weatherService, CitiesRepositoryContract $cityRepository)
     {
         try {
 
-            $city = Cities::where('name', $name)->first();
+            if (!$city = $cityRepository->getAcitveCityByName($name)) {
+                return $this->sendError('No city found');
+            }
+
             $response = $weatherService->getForecastForSingleCity($city);
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
@@ -36,11 +39,10 @@ class CitiesController extends BaseController
         try {
 
             $cityModel = $cityRepository->saveCity($request);
-            // $response = $weatherService->getForecastForSingleCity($cityModel);
 
             return $this->sendResponse('Success', $cityModel);
         } catch (\Exception $e) {
-            // dd($e);
+            
             return $this->sendError($e->getMessage());
         }
     }

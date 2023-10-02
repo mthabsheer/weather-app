@@ -42,7 +42,7 @@ class OpenWeatherService implements WeatherApiContracts
     public function getForecastForAllCity(): array|Exception
     {
         $cityData = [];
-        $cities = Cities::cursorPaginate(config('services.pagination'));
+        $cities = Cities::active()->cursorPaginate(config('services.pagination'));
 
         foreach ($cities as $key => $city) {
             $cityData[] = $this->getForecastForSingleCity($city);
